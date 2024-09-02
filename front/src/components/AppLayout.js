@@ -1,34 +1,11 @@
-import React, { useEffect } from 'react';
-import instance from './api/axiosInstance';  // axios 인스턴스를 설정한 파일 경로
+import { useCallback } from 'react';
+import useFetchAurctionItems from '../hooks/useFetchAurctionItems';
 
-function App() {
-  const getAPIData = async () => {
-    const res = instance({
-      method: "post",
-      url: "auctions/items",
-      data: {
-        Sort: "BUY_PRICE",
-        CategoryCode: 210000,
-        ItemTier: 3,
-        ItemGrade: "전설",
-        ItemName: "7레벨",
-        PageNo: 0,
-        SortCondition: "ASC",
-      },
-    }).then((data) => {
-      console.log(data);
-    });
-  };
+function AppLayout() {
+  const itemNames = useCallback( () => ["7레벨 홍염", "8레벨 멸화", "9레벨 멸화"], []); // 조회할 itemName 배열
+  const items = useFetchAurctionItems(itemNames());
 
-  useEffect(() => {
-    getAPIData();
-  }, []);
-  return (
-    <div>
-      <h1>Lostark API Jewel Calc</h1>
-      {/* 여기에 더 많은 UI 컴포넌트를 추가하세요 */}
-    </div>
-  );
+  console.log(items);
 }
 
-export default App;
+export default AppLayout;
