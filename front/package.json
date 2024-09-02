@@ -1,17 +1,22 @@
 {
-  "name": "lostarkapi_jewel_calc",
+  "name": "front",
   "version": "0.1.0",
+  "description": "",
+  "main": "pages/index.js",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "next": "^14.2.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "next",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
