@@ -1,16 +1,32 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AppLayout from './components/AppLayout';
+import { Layout, Collapse } from "antd"
 
 function App() {
 
-  // useEffect(() => {
-  // }, []);
-
   return (
-    <div>
+    <Layout>
       <h1>Lostark API Jewel Calc</h1>
-      <AppLayout />
-    </div>
+      <Collapse defaultActiveKey={['1']} expandIconPosition={"end"} ghost items={
+        [
+          {
+            key: '1',
+            label: '보석 시세',
+            children: <AppLayout />,
+          },
+          {
+            key: '2',
+            label: '보석 현황',
+            children: <p>{""}</p>,
+          },
+          {
+            key: '3',
+            label: '즐겨찾기',
+            children: <p>{""}</p>,
+          },
+        ]
+      } />
+    </Layout>
   );
 }
 
