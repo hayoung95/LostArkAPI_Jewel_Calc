@@ -1,6 +1,6 @@
 import useFetchAuctionItems from '../hooks/useFetchAuctionItems';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateJewelPrice, updateTime } from '../redux/actions';
+import { updateJewelPrice, updateLowJewelsCaheValue, updateTime } from '../redux/actions';
 import { useEffect } from 'react';
 import { Collapse } from "antd"
 
@@ -17,8 +17,32 @@ function AppLayout() {
   const { res, loading } = useFetchAuctionItems(reqItemList);
 
   const jewels = useSelector(state => state.jewels);
+  const goldPrice = useSelector(state => state.goldPrice);
   const lastUpdateTime = useSelector(state => state.lastUpdateTime);
   const dispatch = useDispatch();
+
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat('ko-KR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(number);
+  };
+  
+  const t3LowJewelsSetCashValue = (standardPrice) => {
+    const lowJewelsList = jewelList.slice(0, 4).reverse();
+    lowJewelsList.forEach((jewelKey, index) => {
+      console.log("test : " + jewelKey, standardPrice/Math.pow(3, index));
+      dispatch(updateLowJewelsCaheValue(jewelKey, standardPrice/Math.pow(3, (index+1))))
+    });
+  };
+
+  const t4LowJewelsSetCashValue = (standardPrice) => {
+    const lowJewelsList = jewelList.slice(7, 9).reverse();
+    lowJewelsList.forEach((jewelKey, index) => {
+      console.log("test : " + jewelKey, standardPrice/Math.pow(3, index));
+      dispatch(updateLowJewelsCaheValue(jewelKey, standardPrice/Math.pow(3, (index+1))))
+    });
+  };
 
   // fetch Response > jewel price 계산 > redux
     useEffect(() => {
@@ -39,6 +63,8 @@ function AppLayout() {
           }
         } finally {
           dispatch(updateTime(new Date().toISOString()));
+          t3LowJewelsSetCashValue(jewels["t3Lv9"].cashValue);
+          t4LowJewelsSetCashValue(jewels["t4Lv7"].cashValue);
         }
       }
     }, [loading, res, dispatch]);
@@ -50,6 +76,8 @@ function AppLayout() {
     if (!res || !res[0] || !res[0].Items) {
       return <div>데이터가 없습니다.</div>;
     }
+    const getPreviousCashPrice = (lowestPrice) => formatNumber(lowestPrice * 0.01 * goldPrice.previous);
+    const getCurrentCashPrice = (lowestPrice) => formatNumber(lowestPrice * 0.01 * goldPrice.current);
 
     const array = jewelList.map((jewelKey, index) => {
       return {
@@ -57,11 +85,14 @@ function AppLayout() {
         label: jewels[jewelKey]?.jewelName,
         children: (
           <>
-            <p>평균가격: {jewels[jewelKey]?.avgPrice}</p>
-            <p>최저가: {jewels[jewelKey]?.lowestPrice}</p>
+            <div>
+              <p>평균가격: {formatNumber(jewels[jewelKey]?.avgPrice)}    최저가: {formatNumber(jewels[jewelKey]?.lowestPrice)}</p>
+            </div>
+            <div>
+              <p>현금가: {getPreviousCashPrice(jewels[jewelKey].lowestPrice)}(이전)  {getCurrentCashPrice(jewels[jewelKey].lowestPrice)}(현재)</p>
+            </div>
           </>
         ) ,
-        //"평균가격 : " + jewels[jewelKey]?.avgPrice + "  최저가 : " + jewels[jewelKey]?.lowestPrice 
       };
     });
 
