@@ -1,13 +1,17 @@
 import React from 'react';
 import AppLayout from './components/AppLayout';
 import { Layout, Collapse } from "antd"
+import { Divider } from 'antd';
+import GoldPrice from './components/GoldPrice';
 
 function App() {
 
   return (
     <Layout>
       <h1>Lostark API Jewel Calc</h1>
-      <Collapse defaultActiveKey={['1']} expandIconPosition={"end"} ghost items={
+      <GoldPrice />
+      <Divider />
+      <Collapse expandIconPosition={"end"} ghost items={
         [
           {
             key: '1',

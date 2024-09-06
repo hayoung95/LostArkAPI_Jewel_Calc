@@ -1,7 +1,7 @@
 import useFetchAuctionItems from '../hooks/useFetchAuctionItems';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateJewelPrice, updateTime } from '../redux/actions';
-import { Children, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Collapse } from "antd"
 
 function AppLayout() {
@@ -53,9 +53,15 @@ function AppLayout() {
 
     const array = jewelList.map((jewelKey, index) => {
       return {
-        key: {index},
+        key: index,
         label: jewels[jewelKey]?.jewelName,
-        children: "평균가격 : " + jewels[jewelKey]?.avgPrice + "  최저가 : " + jewels[jewelKey]?.lowestPrice 
+        children: (
+          <>
+            <p>평균가격: {jewels[jewelKey]?.avgPrice}</p>
+            <p>최저가: {jewels[jewelKey]?.lowestPrice}</p>
+          </>
+        ) ,
+        //"평균가격 : " + jewels[jewelKey]?.avgPrice + "  최저가 : " + jewels[jewelKey]?.lowestPrice 
       };
     });
 

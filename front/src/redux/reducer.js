@@ -1,4 +1,4 @@
-import { UPDATE_JEWEL_PRICE, UPDATE_TIME } from './actions';
+import { UPDATE_JEWEL_PRICE, UPDATE_GOLD_PRICE, UPDATE_TIME } from './actions';
 
 const initialState = {
     jewels: {
@@ -19,6 +19,7 @@ const initialState = {
         t4Lv10Att: { jewelName: "10레벨 겁화", lowestPrice: 0, avgPrice: 0 },
         t4Lv10Wt: { jewelName: "10레벨 작열", lowestPrice: 0, avgPrice: 0 },
     },
+    goldPrice: { previous: 1, current: 10},
     lastUpdateTime: null
 };
 
@@ -42,6 +43,15 @@ const jewelReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lastUpdateTime: action.payload // lastUpdateTime을 업데이트
+            };
+        }
+        case UPDATE_GOLD_PRICE: {
+            return {
+                ...state,
+                goldPrice: {
+                    previous: state.goldPrice.current,
+                    current: action.payload
+                }
             };
         }
         default:
